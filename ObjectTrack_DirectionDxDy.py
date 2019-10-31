@@ -126,12 +126,12 @@ class ObjectDetection:
                     # ensure there is significant movement in the
                     # x-direction
                     if np.abs(dX) > 20:
-                        dirX = "East" if np.sign(dX) == 1 else "West"
+                        dirX = "Right" if np.sign(dX) == 1 else "Left"
 
                     # ensure there is significant movement in the
                     # y-direction
                     if np.abs(dY) > 20:
-                        dirY = "North" if np.sign(dY) == 1 else "South"
+                        dirY = "Up" if np.sign(dY) == 1 else "Down"
 
                     # handle when both directions are non-empty
                     if dirX != "" and dirY != "":
@@ -155,7 +155,7 @@ class ObjectDetection:
 #             setDirection(direction)
             cv2.putText(frame, direction, (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
                 0.65, (0, 0, 255), 3)
-            print ("here",direction)
+            # print ("here",direction)
             cv2.putText(frame, "dx: {}, dy: {}".format(dX, dY),
                 (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
                 0.35, (0, 0, 255), 1)
