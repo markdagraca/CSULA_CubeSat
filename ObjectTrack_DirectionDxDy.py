@@ -182,6 +182,7 @@ class ObjectDetection:
         cv2.destroyAllWindows()
     
 
+#need to add setters and getters 
 # def setDx():
     
 # def setDy():
