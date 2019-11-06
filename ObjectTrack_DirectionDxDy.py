@@ -39,7 +39,6 @@ class ObjectDetection:
         (dX, dY) = (0, 0)
         direction = ""
 
-
         # if a video path was not supplied, grab the reference
         # to the webcam
         if not args.get("video", False):
@@ -92,10 +91,24 @@ class ObjectDetection:
                 # find the largest contour in the mask, then use
                 # it to compute the minimum enclosing circle and
                 # centroid
+                
+                # boundCircle
                 c = max(cnts, key=cv2.contourArea)
                 ((x, y), radius) = cv2.minEnclosingCircle(c)
                 M = cv2.moments(c)
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+
+
+                # boundingRect 
+                # green_area = max(cnts, key=cv2.contourArea)
+                # M = cv2.moments(green_area)
+                # (xg,yg,wg,hg) = cv2.boundingRect(green_area)
+
+                # center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+
+
+                # cv2.rectangle(frame,(xg,yg),(xg+wg, yg+hg),(0,255,0),2)
+                # pts.appendleft(center)
 
                 # only proceed if the radius meets a minimum size
                 if radius > 10:
@@ -159,12 +172,18 @@ class ObjectDetection:
             cv2.putText(frame, "dx: {}, dy: {}".format(dX, dY),
                 (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
                 0.35, (0, 0, 255), 1)
+            
+            if direction =="Right":
+                print(left())
+            if direction =="Left":
+                print(right())
+            if direction == "":
+                print(forward())
 
             # show the frame to our screen and increment the frame counter
             cv2.imshow("Frame", frame)
             key = cv2.waitKey(1) & 0xFF
             counter += 1
-#             getDirection
 
             # if the 'q' key is pressed, stop the loop
             if key == ord("q"):
@@ -182,22 +201,21 @@ class ObjectDetection:
         cv2.destroyAllWindows()
     
 
-#need to add setters and getters 
-# def setDx():
     
-# def setDy():
+def getDx():
+    return dX
+
+def getDy():
+    return dY
     
-# def getDx():
-    
-# def getDy():
-    
-# def setDirection(self,direction):
-#     self.direction = direction
-    
-# def getDirection():
-    
-    
-    
-    
-    
+
+def forward():
+     return "forward"
+def reverse():
+    return "reverse"
+def left():
+    return "left"
+def right():
+    return "right"
+ 
 a = ObjectDetection.startDetection()
