@@ -100,15 +100,16 @@ class ObjectDetection:
 
 
                 # boundingRect 
-                # green_area = max(cnts, key=cv2.contourArea)
-                # M = cv2.moments(green_area)
-                # (xg,yg,wg,hg) = cv2.boundingRect(green_area)
+                green_area = max(cnts, key=cv2.contourArea)
+                M = cv2.moments(green_area)
+                (xg,yg,wg,hg) = cv2.boundingRect(green_area)
 
-                # center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+                center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
 
-                # cv2.rectangle(frame,(xg,yg),(xg+wg, yg+hg),(0,255,0),2)
-                # pts.appendleft(center)
+                cv2.rectangle(frame,(xg,yg),(xg+wg, yg+hg),(0,255,0),2)
+
+                pts.appendleft(center)
 
                 # only proceed if the radius meets a minimum size
                 if radius > 10:
@@ -173,6 +174,7 @@ class ObjectDetection:
                 (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
                 0.35, (0, 0, 255), 1)
             
+            #check direction of Object Movement, then turn toward the moving object, i.e if object goes to left then command to turn right is sent to SimPlat 
             if direction =="Right":
                 print(left())
             if direction =="Left":
