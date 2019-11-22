@@ -1,7 +1,9 @@
 """
 
-
+Note : 
 Flip camera  and make ajustments for RaspPi use
+Correct file path for CameraMatrix and CameraDistortion 
+
 
 """
 
@@ -141,34 +143,5 @@ while True:
         cap.release()
         cv2.destroyAllWindows()
         break
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
