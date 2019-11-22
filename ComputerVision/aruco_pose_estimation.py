@@ -1,19 +1,7 @@
 """
 
 
-
-F1: Flipped (180 deg) tag frame around x axis
-F2: Flipped (180 deg) camera frame around x axis
-
-The attitude of a generic frame 2 respect to a frame 1 can obtained by calculating euler(R_21.T)
-
-We are going to obtain the following quantities:
-    > from aruco library we obtain tvec and Rct, position of the tag in camera frame and attitude of the tag
-    > position of the Camera in Tag axis: -R_ct.T*tvec
-    > Transformation of the camera, respect to f1 (the tag flipped frame): R_cf1 = R_ct*R_tf1 = R_cf*R_f
-    > Transformation of the tag, respect to f2 (the camera flipped frame): R_tf2 = Rtc*R_cf2 = R_tc*R_f
-    > R_tf1 = R_cf2 an symmetric = R_f
-
+Flip camera  and make ajustments for RaspPi use
 
 """
 
