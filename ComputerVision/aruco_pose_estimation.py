@@ -1,11 +1,7 @@
-"""
-
-Note : 
-Flip camera  and make ajustments for RaspPi use
-Correct file path for CameraMatrix and CameraDistortion 
 
 
-"""
+
+# Note : flip camera for Raspberry pi  
 
 import numpy as np
 import cv2
@@ -52,6 +48,28 @@ def rotationMatrixToEulerAngles(R):
 
 
 
+def navigateToward(pos_camera):
+
+
+    # checking X position first, goal is to thrust until X is with in threshhold (i.e  (-10,10))
+    if(pos_camera[0]>=15.00):
+        print("MOVE LEFT  ! ! ")
+    
+    if(pos_camera[0]<=-15.00):
+        print("MOVE RIGHT  ! ! ")
+    
+    # checking Y position after X to determine if needed to go higher or lower
+    if(pos_camera[1]>=15.00):
+        print("MOVE UP  ! ! ")
+    
+    if(pos_camera[1]<=-15.00):
+        print("MOVE DOWN  ! ! ")
+
+    # all three requirements (X,Y,Z ) are within range we are at destination 
+    if(pos_camera[2]<=30.00):
+        print("DESTINATION REACHED ! ! ")
+
+
 #--- Get the camera calibration path
 calib_path  = ""
 camera_matrix   = np.loadtxt(calib_path+'cameraMatrix_raspi.txt', delimiter=',')
@@ -60,8 +78,10 @@ camera_distortion   = np.loadtxt(calib_path+'cameraDistortion_raspi.txt', delimi
 #--- 180 deg rotation matrix around the x axis
 R_flip  = np.zeros((3,3), dtype=np.float32)
 R_flip[0,0] = 1.0
-R_flip[1,1] =-1.0
+R_flip[1,1] =-1.0   
 R_flip[2,2] =-1.0
+
+
 
 #--- Define the aruco dictionary
 aruco_dict  = aruco.getPredefinedDictionary(aruco.DICT_ARUCO_ORIGINAL)
@@ -133,7 +153,14 @@ while True:
                             math.degrees(yaw_camera))
         cv2.putText(frame, str_attitude, (0, 250), font, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
+        print("distance X from camera : ",pos_camera[0])
+        print("distance Y from camera : ",pos_camera[1])
+        print("distance Z from camera : ",pos_camera[2])
 
+        navigateToward(pos_camera)
+
+        
+      
     #--- Display the frame
     cv2.imshow('frame', frame)
 
@@ -143,5 +170,33 @@ while True:
         cap.release()
         cv2.destroyAllWindows()
         break
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
