@@ -39,7 +39,6 @@ class ObjectDetection:
         (dX, dY) = (0, 0)
         direction = ""
 
-
         # if a video path was not supplied, grab the reference
         # to the webcam
         if not args.get("video", False):
@@ -92,10 +91,25 @@ class ObjectDetection:
                 # find the largest contour in the mask, then use
                 # it to compute the minimum enclosing circle and
                 # centroid
+                
+                # boundCircle
                 c = max(cnts, key=cv2.contourArea)
                 ((x, y), radius) = cv2.minEnclosingCircle(c)
                 M = cv2.moments(c)
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+
+
+                # boundingRect 
+                green_area = max(cnts, key=cv2.contourArea)
+                M = cv2.moments(green_area)
+                (xg,yg,wg,hg) = cv2.boundingRect(green_area)
+
+                center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+
+
+                cv2.rectangle(frame,(xg,yg),(xg+wg, yg+hg),(0,255,0),2)
+
+                pts.appendleft(center)
 
                 # only proceed if the radius meets a minimum size
                 if radius > 10:
@@ -126,12 +140,12 @@ class ObjectDetection:
                     # ensure there is significant movement in the
                     # x-direction
                     if np.abs(dX) > 20:
-                        dirX = "East" if np.sign(dX) == 1 else "West"
+                        dirX = "Right" if np.sign(dX) == 1 else "Left"
 
                     # ensure there is significant movement in the
                     # y-direction
                     if np.abs(dY) > 20:
-                        dirY = "North" if np.sign(dY) == 1 else "South"
+                        dirY = "Up" if np.sign(dY) == 1 else "Down"
 
                     # handle when both directions are non-empty
                     if dirX != "" and dirY != "":
@@ -155,16 +169,23 @@ class ObjectDetection:
 #             setDirection(direction)
             cv2.putText(frame, direction, (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
                 0.65, (0, 0, 255), 3)
-            print ("here",direction)
+            # print ("here",direction)
             cv2.putText(frame, "dx: {}, dy: {}".format(dX, dY),
                 (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
                 0.35, (0, 0, 255), 1)
+            
+            #check direction of Object Movement, then turn toward the moving object, i.e if object goes to left then command to turn right is sent to SimPlat 
+            if direction =="Right":
+                print(left())
+            if direction =="Left":
+                print(right())
+            if direction == "":
+                print(forward())
 
             # show the frame to our screen and increment the frame counter
             cv2.imshow("Frame", frame)
             key = cv2.waitKey(1) & 0xFF
             counter += 1
-#             getDirection
 
             # if the 'q' key is pressed, stop the loop
             if key == ord("q"):
@@ -182,21 +203,21 @@ class ObjectDetection:
         cv2.destroyAllWindows()
     
 
-# def setDx():
     
-# def setDy():
+def getDx():
+    return dX
+
+def getDy():
+    return dY
     
-# def getDx():
-    
-# def getDy():
-    
-# def setDirection(self,direction):
-#     self.direction = direction
-    
-# def getDirection():
-    
-    
-    
-    
-    
+
+def forward():
+     return "forward"
+def reverse():
+    return "reverse"
+def left():
+    return "left"
+def right():
+    return "right"
+ 
 a = ObjectDetection.startDetection()
