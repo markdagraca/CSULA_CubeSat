@@ -48,26 +48,14 @@ def rotationMatrixToEulerAngles(R):
 
 
 
-def navigateToward(pos_camera):
+def distanceFromTarget(pos_camera):
+
+    return pos_camera[0],pos_camera[1],pos_camera[2]
 
 
-    # checking X position first, goal is to thrust until X is with in threshhold (i.e  (-10,10))
-    if(pos_camera[0]>=15.00):
-        print("MOVE LEFT  ! ! ")
-    
-    if(pos_camera[0]<=-15.00):
-        print("MOVE RIGHT  ! ! ")
-    
-    # checking Y position after X to determine if needed to go higher or lower
-    if(pos_camera[1]>=15.00):
-        print("MOVE UP  ! ! ")
-    
-    if(pos_camera[1]<=-15.00):
-        print("MOVE DOWN  ! ! ")
+def angleOffset(roll_camera,pitch_camera,yaw_camera):
 
-    # all three requirements (X,Y,Z ) are within range we are at destination 
-    if(pos_camera[2]<=30.00):
-        print("DESTINATION REACHED ! ! ")
+    return math.degrees(roll_camera),math.degrees(pitch_camera),math.degrees(yaw_camera)
 
 
 #--- Get the camera calibration path
@@ -153,11 +141,20 @@ while True:
                             math.degrees(yaw_camera))
         cv2.putText(frame, str_attitude, (0, 250), font, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
-        print("distance X from camera : ",pos_camera[0])
-        print("distance Y from camera : ",pos_camera[1])
-        print("distance Z from camera : ",pos_camera[2])
+        # print("distance X from camera : ",pos_camera[0])
+        # print("distance Y from camera : ",pos_camera[1])
+        # print("distance Z from camera : ",pos_camera[2])
 
-        navigateToward(pos_camera)
+
+
+        # print(" Roll camera :  ",(math.degree(roll_camera)))
+        # print(" Pitch camera :  ",(math.degree(pitch_camera)))
+        # print(" Yaw camera :  ",(math.degree(yaw_camera)))
+
+        # X,Y,Z distance from aruco marker
+        distanceFromTarget(pos_camera)
+        angleOffset(roll_camera,pitch_camera,yaw_camera)
+
 
         
       
